@@ -1,0 +1,10 @@
+{{- if and .Values.ingress.oauth.enabled (not .Values.ingress.oauth.useExistingSecret) }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "kube-ops-view.fullname" . }}-oidc
+data:
+  authcode-client-id: {{ .Values.ingress.oauth.clientId }}
+  authcode-client-secret: {{ .Values.ingress.oauth.clientSecret }}
+{{- end }}

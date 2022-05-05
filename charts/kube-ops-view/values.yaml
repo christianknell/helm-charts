@@ -92,6 +92,13 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+  oauth:
+    enabled: false
+    accessTokenUrl: ""
+    authorizeUrl: ""
+    clientId: ""
+    clientSecret: ""
+    scope: ""
 
 # -- Values for including the subchart Redis™ from Bitnami
 redis:
