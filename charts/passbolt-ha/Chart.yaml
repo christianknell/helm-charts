@@ -1,0 +1,25 @@
+---
+apiVersion: v2
+name: passbolt-ha
+description: A Helm chart to deploy Passbolt with MySQL and ProxySQL for HA
+type: application
+version: 0.0.1
+home: https://github.com/christianknell/helm-charts
+icon: https://avatars.githubusercontent.com/u/4386228?s=200&v=4
+maintainers:
+  - name: christianknell
+    email: christian@knell.it
+sources:
+  - https://github.com/bitnami/charts/tree/master/bitnami/mysql
+  - https://github.com/cnieg/helm-charts/tree/master/charts/passbolt
+  - https://github.com/flachesis/proxysql/tree/master/charts/proxysql
+dependencies:
+  - name: mysql
+    repository: https://charts.bitnami.com/bitnami
+    version: 9.2.1
+  - name: passbolt
+    repository: https://cnieg.github.io/helm-charts
+    version: 1.1.7
+  - name: proxysql
+    repository: https://flachesis.github.io/proxysql
+    version: 1.7.0

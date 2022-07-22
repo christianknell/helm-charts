@@ -1,0 +1,143 @@
+---
+mysql:
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     - labelSelector:
+    #         matchExpressions:
+    #           - key: app.kubernetes.io/instance
+    #             operator: In
+    #             values:
+    #               - release-name
+    #           - key: app.kubernetes.io/name
+    #             operator: In
+    #             values:
+    #               - mysql
+    #       topologyKey: "kubernetes.io/hostname"
+  architecture: replication
+  auth:
+    database: passbolt
+    password: passbolt
+    rootPassword: root
+    username: passbolt
+  enabled: true
+  fullnameOverride: passbolt-mysql
+  global:
+    storageClass: ""
+  image:
+    pullPolicy: Always
+  metrics:
+    enabled: false
+    image:
+      pullPolicy: Always
+    serviceMonitor:
+      enabled: false
+      labels: {}
+  rbac:
+    create: true
+  resources:
+    limits:
+      cpu: 200m
+      memory: 1024Mi
+    requests:
+      cpu: 10m
+      memory: 256Mi
+  secondary:
+    replicaCount: 2
+  volumePermissions:
+    enabled: true
+    image:
+      pullPolicy: Always
+
+passbolt:
+  db:
+    host: passbolt-proxysql
+    name: passbolt
+    username: passbolt
+    password: passbolt
+    # existingSecret:
+    #   name: passbolt-mysql
+    #   usernameKey: username
+    #   passwordKey: mysql-password
+  fullnameOverride: passbolt
+  image:
+    pullPolicy: Always
+  ingress:
+    enabled: false
+    className: ""
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+  mariadb:
+    enabled: false
+  passbolt:
+    baseUrl: ""
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+    size: 512Mi
+  resources:
+    limits:
+      cpu: 100m
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+
+proxysql:
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     - labelSelector:
+    #         matchExpressions:
+    #           - key: app.kubernetes.io/instance
+    #             operator: In
+    #             values:
+    #               - release-name
+    #           - key: app.kubernetes.io/name
+    #             operator: In
+    #             values:
+    #               - proxysql
+    #       topologyKey: "kubernetes.io/hostname"
+  enabled: true
+  fullnameOverride: passbolt-proxysql
+  image:
+    pullPolicy: Always
+  proxysql:
+    admin:
+      password: admin
+      user: admin
+    mysql:
+      version: "8.0.29"
+      servers:
+        - isWriter: true
+          hostname: passbolt-mysql-primary
+          port: 3306
+        - isWriter: false
+          hostname: passbolt-mysql-secondary
+          port: 3306
+      users:
+        - username: root
+          password: root
+        - username: passbolt
+          password: passbolt
+    web:
+      password: admin
+      user: admin
+  replicaCount: 3
+  resources:
+    limits:
+      cpu: 200m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi

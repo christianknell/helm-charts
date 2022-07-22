@@ -1,0 +1,89 @@
+{{ template "chart.header" . }}
+{{ template "chart.description" . }}
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## TL;DR;
+
+```console
+helm repo add christianknell https://christianknell.github.io/helm-charts
+helm repo update
+helm install passbolt-ha christianknell/passbolt-ha
+```
+
+## Introduction
+
+This chart bootstraps [Passbolt](https://github.com/passbolt), [MYSQL by Bitnami](https://github.com/bitnami/charts/tree/master/bitnami/mysql) and [ProxySQL](https://github.com/flachesis/proxysql/tree/master/charts/proxysql) using the [Helm](https://helm.sh) package manager.
+
+## Prerequisites
+
+- Kubernetes 1.19+
+
+## Installing the Chart
+
+To install the chart with the release name `passbolt-ha`:
+
+```console
+helm repo add christianknell https://christianknell.github.io/helm-charts
+helm repo update
+helm install passbolt-ha christianknell/passbolt-ha
+```
+
+These commands deploy Skooner on the Kubernetes cluster in the default configuration. The [Values](#values) section lists the values that can be configured during installation.
+
+> **Tip**: List all releases using `helm list`
+
+## Uninstalling the Chart
+
+To uninstall the `passbolt-ha` deployment:
+
+```console
+helm uninstall passbolt-ha
+```
+
+The command removes all the Kubernetes components associated with the chart and deletes the release.
+
+{{ template "chart.valuesSection" . }}
+
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
+
+Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+
+```console
+helm install passbolt-ha -f values.yaml christianknell/passbolt-ha
+```
+
+### Setting up the database connection
+
+By default the passwords used to install MySQL are very weak. You should therefore create a Secret like the following:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: passbolt-mysql
+stringData:
+  mysql-password: 36X79oYHQBD5C8aGT1Gqzm2jLK4BWPC0
+  mysql-replication-password: UDWAZ2MHISu75YW34S08OB1POTvKoE69
+  mysql-root-password: 24D1FOHKvDLwt5MA087QUVO36IjY9rRY
+  username: passbolt
+type: Opaque
+```
+
+Then update your values like this:
+
+```yaml
+mysql:
+  auth:
+    existingSecret: passbolt-mysql
+proxysql:
+  proxysql:
+    mysql:
+      users:
+        - username: root
+          password: $NEW_PASSWORD
+        - username: passbolt
+          password: $NEW_PASSWORD
+```
+
+{{ template "helm-docs.versionFooter" . }}

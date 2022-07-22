@@ -5,6 +5,7 @@ ipsec-exporter: charts/ipsec-exporter/*
 isso: charts/isso/*
 kube-ops-view: charts/kube-ops-view/*
 netcup-scp-exporter: charts/netcup-scp-exporter/*
+passbolt-ha: charts/passbolt-ha/*
 popeye: charts/popeye/*
 prometheus-pve-exporter: charts/prometheus-pve-exporter/*
 skooner: charts/skooner/*

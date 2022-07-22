@@ -15,4 +15,6 @@ skip-missing-values: true
 release-label: release
 chart-repos:
   - bitnami=https://charts.bitnami.com/bitnami
+  - cnieg=https://cnieg.github.io/helm-charts
+  - flachesis=https://flachesis.github.io/proxysql
 release-notes-file: CHANGELOG.md
