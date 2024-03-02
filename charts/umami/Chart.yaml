@@ -2,7 +2,7 @@ apiVersion: v2
 name: umami
 description: Umami is a simple, fast, privacy-focused alternative to Google Analytics.
 type: application
-version: 3.1.0
+version: 3.2.0
 appVersion: "postgresql-v2.9.0"
 home: https://github.com/christianknell/helm-charts
 icon: https://raw.githubusercontent.com/umami-software/umami/master/public/android-chrome-512x512.png
@@ -19,13 +19,13 @@ dependencies:
     condition: postgresql.enabled
   - name: mysql
     repository: https://charts.bitnami.com/bitnami
-    version: 9.19.1
+    version: 9.22.0
     condition: mysql.enabled
 annotations:
   artifacthub.io/category: monitoring-logging
   artifacthub.io/changes: |
-    - kind: added
-      description: ability to define additional labels on Pods
+    - kind: changed
+      description: bumped chart version of mysql to 9.22.0
   artifacthub.io/screenshots: |
     - title: Umami measures just the important metrics that you care about and everything is displayed on a single, easy to browse page.
       url: https://umami.is/images/feature-website-stats.png
