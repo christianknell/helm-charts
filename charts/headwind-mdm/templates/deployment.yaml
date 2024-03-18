@@ -26,6 +26,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "headwind-mdm.serviceAccountName" . }}
+      {{- if .Values.ingress.enabled }}
+      # Add entry in /etc/hosts to resolve public uri behind reverse proxy
+      hostAliases:
+        - ip:  {{ .Values.ingress.ip | quote }}
+          hostnames:
+          - {{ .Values.headwind.baseDomain | quote }}
+      {{- end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -68,6 +75,10 @@ spec:
               value: "false"
             - name: INSTALL_LANGUAGE
               value: {{ .Values.headwind.installLanguage | default "en" | quote }}
+            {{ if .Values.headwind.sharedSecret -}}
+            - name: SHARED_SECRET
+              value: {{ .Values.headwind.sharedSecret | quote }}
+            {{ end -}}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
