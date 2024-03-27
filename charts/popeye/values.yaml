@@ -9,7 +9,7 @@ image:
   # -- image pull policy
   pullPolicy: Always
   # -- Overrides the image tag
-  tag: "v0.20.2"
+  tag: "v0.21.3"
 
 # -- If defined, uses a Secret to pull an image from a private Docker registry or repository.
 imagePullSecrets: []
